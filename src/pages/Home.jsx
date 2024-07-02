@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { GetSearchedPHVideos, GetSearchedRedtubeVideos, GetSearchedXVideos, GetSearchedXXVideos, GetVideos } from '../services/AppServices'
+import { GetMoreVideos, GetSearchedPHVideos, GetSearchedRedtubeVideos, GetSearchedXVideos, GetSearchedXXVideos, GetVideos } from '../services/AppServices'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Home = () => {
     const nav = useNavigate()
     useEffect(() => {
         getEncounter()
+        getMoreEncounter()
     }, [])
     const [connections, setConnections] = useState([])
+    const [moreConnections, setMoreConnections] = useState([])
     const [search, setSearch] = useState("")
     const [loading, setLoading] = useState(false)
 
@@ -18,6 +21,19 @@ const Home = () => {
             // console.log(response.data)
             if (response.data.success) {
                 setConnections(response?.data.data)
+            }
+        }).catch(err => {
+            console.log(err)
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+    const getMoreEncounter = async () => {
+        setLoading(true)
+        await GetMoreVideos().then(response => {
+            // console.log(response.data)
+            if (response.data.success) {
+                setMoreConnections(response?.data.data)
             }
         }).catch(err => {
             console.log(err)
@@ -47,7 +63,7 @@ const Home = () => {
             //     ...xxVideos.data.data,
             //     ...redtubeVideos.data.data
             // ];
-            setLoadSearch(false)
+
             // setCombinedResults(combinedResults);
 
             const results = await Promise.allSettled([
@@ -61,9 +77,11 @@ const Home = () => {
                 .flatMap(result => result.value.data.data);
 
             setCombinedResults(combinedResults);
+            setLoadSearch(false)
             // console.log(combinedResults);
         } catch (error) {
             setLoadSearch(false)
+            toast.error("something went wrong")
             console.error("Error fetching videos:", error);
         }
 
@@ -158,6 +176,30 @@ const Home = () => {
                                             </div>
                                         </div>
                                     </div>))}
+                                {moreConnections?.map((item, index) => (
+                                    <div className="col-6" key={index}>
+                                        <div className="dz-media-card style-5" onClick={() => {
+                                            nav("/video", {
+                                                state: { item }
+                                            })
+                                        }}>
+                                            {/* <i className="flaticon flaticon-play" /> */}
+
+                                            <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                            </a>
+                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                            <div className="dz-content">
+                                                <div className="left-content">
+                                                    <h6 className="title">{item?.duration}</h6>
+                                                    <span className="about">{item?.views}</span>
+                                                </div>
+
+                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
+                                            </div>
+                                        </div>
+                                    </div>))}
                             </>
                         )}
 
@@ -224,6 +266,7 @@ const Home = () => {
                 </div>
             </div>
             {/*  Setting OffCanvas */}
+            <ToastContainer />
         </>
     )
 }

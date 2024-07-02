@@ -12,7 +12,7 @@ const PlayVideo = () => {
                 <div className="container">
                     <div className="header-content">
                         <div className="left-content">
-                            <a href="javascript:void(0);" className="back-btn" onClick={() => nav("/home")}>
+                            <a className="back-btn" onClick={() => nav(-1)}>
                                 <i className="icon feather icon-arrow-left" />
                             </a>
                             <h6 className="title">Back</h6>

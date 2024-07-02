@@ -8,7 +8,8 @@ const Search = () => {
     const [search, setSearch] = useState("")
     const [combinedResults, setCombinedResults] = useState([]);
     const [loadSearch, setLoadSearch] = useState(false)
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
+        e.preventDefault();
         setLoadSearch(true)
         try {
             // setCombinedResults(combinedResults);
@@ -59,8 +60,10 @@ const Search = () => {
             {/* main content */}
 
             <div className="page-content space-top p-b70">
-                <input className="form-control my-2 mx-2" onChange={(e) => setSearch(e.target.value)} type="text" placeholder='Please search for any video' />
-                <button className='btn btn-block btn-secondary my-2 mx-2' onClick={handleSearch}>{loadSearch ? 'Searching...' : 'Search'}</button>
+                <form onSubmit={handleSearch}>
+                    <input className="form-control my-2 mx-2" onChange={(e) => setSearch(e.target.value)} type="text" placeholder='Please search for any video' />
+                    <button className='btn btn-block btn-secondary my-2 mx-2' type='submit'>{loadSearch ? 'Searching...' : 'Search'}</button>
+                </form>
                 <hr />
                 <div className="container pt-0">
                     <small>{combinedResults.length} results</small>
@@ -74,7 +77,7 @@ const Search = () => {
                                         })
                                     }}>
 
-                                        <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                        <a className="dz-media" style={{ position: 'relative' }}>
                                             <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
                                         </a>
                                         <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
