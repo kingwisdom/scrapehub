@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { GetSearchedPHVideos, GetSearchedRedtubeVideos, GetSearchedXVideos, GetSearchedXXVideos, GetVideos } from '../services/AppServices'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Search = () => {
     const nav = useNavigate()
@@ -10,6 +11,9 @@ const Search = () => {
     const [loadSearch, setLoadSearch] = useState(false)
     const handleSearch = async (e) => {
         e.preventDefault();
+        if (search.length < 4) {
+            return toast.error("Please enter at least a word");
+        }
         setLoadSearch(true)
         try {
             // setCombinedResults(combinedResults);
@@ -71,24 +75,49 @@ const Search = () => {
                         <>
                             {combinedResults?.map((item, index) => (
                                 <div className="col-6" key={index}>
-                                    <div className="dz-media-card style-5" onClick={() => {
+                                    <a data-toggle="modal" data-target={`#itemModalLong${index}`}>
+                                        <div className="dz-media-card style-5">
+                                            {/* <div className="dz-media-card style-5" onClick={() => {
                                         nav("/video", {
                                             state: { item }
                                         })
-                                    }}>
+                                    }}> */}
 
-                                        <a className="dz-media" style={{ position: 'relative' }}>
-                                            <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                        </a>
-                                        <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
-                                        <div className="dz-content">
-                                            <div className="left-content">
-                                                <h6 className="title">{item?.duration}</h6>
-                                                <span className="about">{item?.views}</span>
+                                            <a className="dz-media" style={{ position: 'relative' }}>
+                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                            </a>
+                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                            <div className="dz-content">
+                                                <div className="left-content">
+                                                    <h6 className="title">{item?.duration}</h6>
+                                                    <span className="about">{item?.views}</span>
+                                                </div>
+
+                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
                                             </div>
+                                        </div> </a>
 
-                                            <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+                                    <div className="modal fade" id={`itemModalLong${index}`} tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div className="modal-dialog" role="document">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title" id="exampleModalLongTitle">{item?.title?.substring(0, 60)}</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    <div className="col-12">
+                                                        {/* <iframe src={item?.video} frameborder="0" width="100%" height="315"></iframe> */}
+                                                        <iframe id="" width="100%" height="350"
+                                                            src={item?.video} frameborder="0" allowfullscreen>
+                                                        </iframe>
+                                                        <a className='text-center' href={item?.video} target='_blank'>if not played, Play here</a>
+                                                    </div>
+                                                </div>
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>))}
@@ -100,6 +129,33 @@ const Search = () => {
             </div>
 
 
+            {/* modal */}
+            <div>
+                {/* Button trigger modal */}
+                {/* <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                    Launch demo modal
+                </button> */}
+                {/* Modal */}
+                <div className="modal fade" id="exampleModalLon" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <ToastContainer />
         </>
     )
 }
