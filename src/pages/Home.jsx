@@ -186,7 +186,7 @@ const Home = () => {
                                         }}>
                                             {/* <i className="flaticon flaticon-play" /> */}
 
-                                            <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                            <a className="dz-media" style={{ position: 'relative' }}>
                                                 <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
                                             </a>
                                             <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />

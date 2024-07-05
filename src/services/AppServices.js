@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { BASE_URL } from "../config";
-import { useSelector } from 'react-redux';
 
 
 // const user = JSON.parse(window.localStorage.getItem('user'));
@@ -41,6 +40,13 @@ export const ConfirmOtp = async (model) => {
 }
 export const GetVideos = async () => {
     return await axios.get(`${BASE_URL}pornhub/search?key=hardcore&sort=mr`, {
+        "headers": {
+            'Content-Type': 'application/json'
+        }
+    })
+}
+export const GetRelatedVideos = async (id) => {
+    return await axios.get(`${BASE_URL}pornhub/related?id=${id}`, {
         "headers": {
             'Content-Type': 'application/json'
         }
