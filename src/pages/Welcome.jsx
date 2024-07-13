@@ -18,11 +18,11 @@ const Welcome = () => {
                         <a style={{ cursor: 'pointer' }} onClick={() => {
                             dispatch(older());
                             navigation("/home")
-                        }} className="btn btn-icon icon-start btn-tp w-100">
+                        }} className="btn btn-icon btn-white icon-start btn-tp w-100">
                             <span>Yes</span>
                         </a>
 
-                        <a href="/register" className="btn btn-icon-outline btn-white icon-start w-100">
+                        <a href="/register" className="btn btn-icon-outline  icon-start w-100">
                             <img src="../assets/images/social-icon/telephone.svg" alt="" />
                             <span>No.</span>
                         </a>

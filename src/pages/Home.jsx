@@ -3,6 +3,7 @@ import { GetMoreVideos, GetSearchedPHVideos, GetSearchedRedtubeVideos, GetSearch
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import { Virtuoso } from 'react-virtuoso'
 
 const Home = () => {
     const nav = useNavigate()
@@ -108,7 +109,6 @@ const Home = () => {
                         </div>
                         <div className="right-content d-flex gap-2">
                             <a href="javascript:void(0);" className="filter-icon icon-fill" data-bs-toggle="offcanvas" data-bs-target="#settingCanvas" aria-controls="offcanvasBottom">
-                                {/* <i className="flaticon flaticon-settings-sliders" /> */}
                             </a>
                         </div>
                     </div>
@@ -122,19 +122,16 @@ const Home = () => {
                 <button className='btn btn-block btn-outline-primary btn-sm my-2 mx-2' onClick={handleSearch}>{loadSearch ? 'Searching...' : 'Search'}</button>
                 <hr />
                 <div className="container pt-0">
-                    <div className="row g-2">
-                        {combinedResults?.length > 0 ? (
-                            <>
-                                {combinedResults?.map((item, index) => (
-                                    <div className="col-6" key={index}>
+
+                    {combinedResults?.length > 0 ? (
+                        <div className="row g-2">
+                            <Virtuoso
+                                style={{ height: 400, width: '100%' }}
+                                data={combinedResults}
+                                itemContent={(index, item) => (
+                                    <div className='col-12'>
                                         <a data-toggle="modal" data-target={`#itemModalLong${index}`}>
                                             <div className="dz-media-card style-5">
-                                                {/* <div className="dz-media-card style-5" onClick={() => {
-                                            nav("/video", {
-                                                state: { item }
-                                            })
-                                        }}> */}
-                                                {/* <i className="flaticon flaticon-play" /> */}
 
                                                 <a className="dz-media" style={{ position: 'relative' }}>
                                                     <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
@@ -173,65 +170,68 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>))}
-                            </>
-                        ) : (
-                            <>
-                                {connections?.map((item, index) => (
-                                    <div className="col-6" key={index}>
-                                        <div className="dz-media-card style-5" onClick={() => {
-                                            nav("/video", {
-                                                state: { item }
-                                            })
-                                        }}>
-                                            {/* <i className="flaticon flaticon-play" /> */}
+                                    </div>
 
-                                            <a className="dz-media" style={{ position: 'relative' }}>
-                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                            </a>
-                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
-                                            <div className="dz-content">
-                                                <div className="left-content">
-                                                    <h6 className="title">{item?.duration}</h6>
-                                                    <span className="about">{item?.views}</span>
-                                                </div>
+                                )}
+                            />
+                        </div>
+                    ) : (
+                        <>
+                            {connections?.map((item, index) => (
+                                <div className="col-6" key={index}>
+                                    <div className="dz-media-card style-5" onClick={() => {
+                                        nav("/video", {
+                                            state: { item }
+                                        })
+                                    }}>
+                                        {/* <i className="flaticon flaticon-play" /> */}
 
-                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
-
+                                        <a className="dz-media" style={{ position: 'relative' }}>
+                                            <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                        </a>
+                                        <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                        <div className="dz-content">
+                                            <div className="left-content">
+                                                <h6 className="title">{item?.duration}</h6>
+                                                <span className="about">{item?.views}</span>
                                             </div>
+
+                                            <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
                                         </div>
-                                    </div>))}
-                                {moreConnections?.map((item, index) => (
-                                    <div className="col-6" key={index}>
-                                        <div className="dz-media-card style-5" onClick={() => {
-                                            nav("/video", {
-                                                state: { item }
-                                            })
-                                        }}>
-                                            {/* <i className="flaticon flaticon-play" /> */}
+                                    </div>
+                                </div>))}
+                            {moreConnections?.map((item, index) => (
+                                <div className="col-6" key={index}>
+                                    <div className="dz-media-card style-5" onClick={() => {
+                                        nav("/video", {
+                                            state: { item }
+                                        })
+                                    }}>
+                                        {/* <i className="flaticon flaticon-play" /> */}
 
-                                            <a href="#" className="dz-media" style={{ position: 'relative' }}>
-                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                            </a>
-                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
-                                            <div className="dz-content">
-                                                <div className="left-content">
-                                                    <h6 className="title">{item?.duration}</h6>
-                                                    <span className="about">{item?.views}</span>
-                                                </div>
-
-                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
-
+                                        <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                            <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                        </a>
+                                        <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                        <div className="dz-content">
+                                            <div className="left-content">
+                                                <h6 className="title">{item?.duration}</h6>
+                                                <span className="about">{item?.views}</span>
                                             </div>
+
+                                            <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
                                         </div>
-                                    </div>))}
-                            </>
-                        )}
+                                    </div>
+                                </div>))}
+                        </>
+                    )}
 
 
-                    </div>
+
                 </div>
-            </div>
+            </div >
 
 
 
