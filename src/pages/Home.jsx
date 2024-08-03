@@ -132,7 +132,6 @@ const Home = () => {
                                     <div className='col-12'>
                                         <a data-toggle="modal" data-target={`#itemModalLong${index}`}>
                                             <div className="dz-media-card style-5">
-
                                                 <a className="dz-media" style={{ position: 'relative' }}>
                                                     <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
                                                 </a>
