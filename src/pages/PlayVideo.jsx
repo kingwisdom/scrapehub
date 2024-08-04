@@ -8,7 +8,7 @@ const PlayVideo = () => {
     const [related, setRelated] = useState([])
 
     const nav = useNavigate();
-    const { item } = location.state;
+    const { item } = location?.state || '';
     // console.log(item.id)
     useEffect(() => {
         getRelated()
@@ -65,19 +65,19 @@ const PlayVideo = () => {
                 <div className="row g-2">
                     {related?.map((item, index) => (
                         <div className="col-6" key={index}>
-                            <div className="dz-media-card style-5" onClick={() => {
-                                setCurrentVid(item?.video)
-                            }}>
+                            <div className="dz-media-card style-5">
                                 {/* <i className="flaticon flaticon-play" /> */}
 
-                                <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                <a className="dz-media" style={{ position: 'relative' }}>
                                     <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
                                 </a>
-                                <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                <a href={item?.video} target='_blank'>
+                                    <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} /> </a>
                                 <div className="dz-content">
                                     <div className="left-content">
                                         <h6 className="title">{item?.duration}</h6>
                                         <span className="about">{item?.views}</span>
+
                                     </div>
 
                                     <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>

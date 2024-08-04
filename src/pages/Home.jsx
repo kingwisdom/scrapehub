@@ -126,7 +126,6 @@ const Home = () => {
                     {combinedResults?.length > 0 ? (
                         <div className="row g-2">
                             <Virtuoso
-                                style={{ height: 400, width: '100%' }}
                                 data={combinedResults}
                                 itemContent={(index, item) => (
                                     <div className='col-12'>
@@ -176,54 +175,58 @@ const Home = () => {
                         </div>
                     ) : (
                         <>
-                            {connections?.map((item, index) => (
-                                <div className="col-6" key={index}>
-                                    <div className="dz-media-card style-5" onClick={() => {
-                                        nav("/video", {
-                                            state: { item }
-                                        })
-                                    }}>
-                                        {/* <i className="flaticon flaticon-play" /> */}
+                            <div className="row g-2">
+                                {connections?.map((item, index) => (
+                                    <div className="col-6" key={index}>
+                                        <div className="dz-media-card style-5" onClick={() => {
+                                            nav("/video", {
+                                                state: { item }
+                                            })
+                                        }}>
+                                            {/* <i className="flaticon flaticon-play" /> */}
 
-                                        <a className="dz-media" style={{ position: 'relative' }}>
-                                            <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                        </a>
-                                        <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
-                                        <div className="dz-content">
-                                            <div className="left-content">
-                                                <h6 className="title">{item?.duration}</h6>
-                                                <span className="about">{item?.views}</span>
+                                            <a className="dz-media" style={{ position: 'relative' }}>
+                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                            </a>
+                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                            <div className="dz-content">
+                                                <div className="left-content">
+                                                    <h6 className="title">{item?.duration}</h6>
+                                                    <span className="about">{item?.views}</span>
+                                                </div>
+
+                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
                                             </div>
-
-                                            <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
-
                                         </div>
-                                    </div>
-                                </div>))}
-                            {moreConnections?.map((item, index) => (
-                                <div className="col-6" key={index}>
-                                    <div className="dz-media-card style-5" onClick={() => {
-                                        nav("/video", {
-                                            state: { item }
-                                        })
-                                    }}>
-                                        {/* <i className="flaticon flaticon-play" /> */}
+                                    </div>))}
+                            </div>
+                            <div className="row g-2">
+                                {moreConnections?.map((item, index) => (
+                                    <div className="col-6" key={index}>
+                                        <div className="dz-media-card style-5" onClick={() => {
+                                            nav("/video", {
+                                                state: { item }
+                                            })
+                                        }}>
+                                            {/* <i className="flaticon flaticon-play" /> */}
 
-                                        <a href="#" className="dz-media" style={{ position: 'relative' }}>
-                                            <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                        </a>
-                                        <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
-                                        <div className="dz-content">
-                                            <div className="left-content">
-                                                <h6 className="title">{item?.duration}</h6>
-                                                <span className="about">{item?.views}</span>
+                                            <a href="#" className="dz-media" style={{ position: 'relative' }}>
+                                                <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
+                                            </a>
+                                            <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} />
+                                            <div className="dz-content">
+                                                <div className="left-content">
+                                                    <h6 className="title">{item?.duration}</h6>
+                                                    <span className="about">{item?.views}</span>
+                                                </div>
+
+                                                <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
+
                                             </div>
-
-                                            <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
-
                                         </div>
-                                    </div>
-                                </div>))}
+                                    </div>))}
+                            </div>
                         </>
                     )}
 
