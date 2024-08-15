@@ -39,8 +39,8 @@ export const ConfirmOtp = async (model) => {
     })
 }
 
-export const GetVideos = async () => {
-    return await axios.get(`${BASE_URL}pornhub/search?key=latest%20UK&sort=mr`, {
+export const GetVideos = async (page) => {
+    return await axios.get(`${BASE_URL}pornhub/search?key=latest%20UK&sort=mr&page=1`, {
         "headers": {
             'Content-Type': 'application/json'
         }
