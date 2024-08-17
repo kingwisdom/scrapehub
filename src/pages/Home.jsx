@@ -8,49 +8,37 @@ import {
   GetSearchedXXVideos,
   GetVideos,
 } from "../services/AppServices";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { Virtuoso } from "react-virtuoso";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchItems } from "../services/itemsApi";
 
 const Home = () => {
   const nav = useNavigate();
   useEffect(() => {
-    // getEncounter();
-    // getMoreEncounter();
+    getMoreEncounter();
   }, []);
-  const [connections, setConnections] = useState([]);
+
   const [moreConnections, setMoreConnections] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  //   const getEncounter = async () => {
-  //     setLoading(true);
-  //     await GetVideos()
-  //       .then((response) => {
-  //         // console.log(response.data)
-  //         if (response.data.success) {
-  //           setConnections(response?.data.data);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   };
+  const {
+    data: videoLoaded,
+    isLoading,
+    error,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["connections"],
+    queryFn: GetVideos,
+    initialPageParam: 1,
+    getNextPageParam: (lastpage) => lastpage.nextPage,
+  });
 
-  const { data, isLoading, error, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["connections"],
-      queryFn: GetVideos,
-      initialPageParam: 1,
-      getNextPageParam: (lastpage) => lastpage.nextPage,
-    });
-
-  // console.log(data);
+  // console.log(videoLoaded);
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -70,13 +58,13 @@ const Home = () => {
       })
       .catch((err) => {
         console.log(err);
+        setMessage(err.response.data);
       })
       .finally(() => {
         setLoading(false);
       });
   };
   //https://lust.scathach.id/pornhub/related?id=ph63c4e1dc48fe7
-  //https://lust.scathach.id/pornhub/search?key=milf&page=2&sort=mr
   //https://lust.scathach.id/youporn/search?key=teen&page=2
 
   const [combinedResults, setCombinedResults] = useState([]);
@@ -109,16 +97,16 @@ const Home = () => {
       <p style={{ textAlign: "center", alignItems: "center" }}>Loading...</p>
     );
   }
-  if (error) {
-    return (
-      <p
-        className="text-danger"
-        style={{ textAlign: "center", alignItems: "center" }}
-      >
-        {error.message}
-      </p>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <p
+  //       className="text-danger"
+  //       style={{ textAlign: "center", alignItems: "center" }}
+  //     >
+  //       {error.message}
+  //     </p>
+  //   );
+  // }
   return (
     <>
       <header className="header bg-white header-fixed border-0 style-2">
@@ -145,6 +133,10 @@ const Home = () => {
         </div>
       </header>
 
+      {message &&
+        setTimeout(() => {
+          <div className="alert alert-danger">{message}</div>;
+        }, 3000)}
       {/* main content */}
 
       <div className="page-content space-top p-b70">
@@ -264,14 +256,16 @@ const Home = () => {
             </div>
           ) : (
             <>
-              <div className="row g-2">
-                {data.pages.map((page) => {
+              <div>
+                {videoLoaded?.pages.map((page) => {
                   return (
-                    <Fragment key={page.currentPage}>
+                    <div key={page?.currentPage} className="row g-2">
                       {page?.data.data.map((item, index) => {
+                        {
+                          console.log(item.length);
+                        }
                         return (
                           <div className="col-6" key={index}>
-                            {/* {console.log(item)} */}
                             <div
                               className="dz-media-card style-5"
                               onClick={() => {
@@ -280,8 +274,6 @@ const Home = () => {
                                 });
                               }}
                             >
-                              {/* <i className="flaticon flaticon-play" /> */}
-
                               <a
                                 className="dz-media"
                                 style={{ position: "relative" }}
@@ -320,12 +312,11 @@ const Home = () => {
                           </div>
                         );
                       })}
-                      ;
-                    </Fragment>
+                    </div>
                   );
                 })}
               </div>
-
+              {/* <div ref={ref}></div> */}
               <div className="row g-2">
                 {moreConnections?.map((item, index) => (
                   <div className="col-6" key={index}>
@@ -337,8 +328,6 @@ const Home = () => {
                         });
                       }}
                     >
-                      {/* <i className="flaticon flaticon-play" /> */}
-
                       <a
                         href="#"
                         className="dz-media"

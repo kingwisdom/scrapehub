@@ -1,2 +1,2 @@
-export const BASE_URL = "https://lust.scathach.id/"
 
+export const BASE_URL = "https://lust.scathach.id/"

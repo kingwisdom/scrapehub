@@ -1,95 +1,172 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import { GetRelatedVideos } from '../services/AppServices';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { GetRelatedVideos } from "../services/AppServices";
 
 const PlayVideo = () => {
-    const location = useLocation()
-    const [loading, setLoading] = useState(false)
-    const [related, setRelated] = useState([])
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [related, setRelated] = useState([]);
 
-    const nav = useNavigate();
-    const { item } = location?.state || '';
-    // console.log(item.id)
-    useEffect(() => {
-        getRelated()
-    }, [])
+  const nav = useNavigate();
+  const { item } = location?.state || "";
+  useEffect(() => {
+    getRelated();
+  }, []);
 
-    const [currentVid, setCurrentVid] = useState(item?.video)
+  const [currentVid, setCurrentVid] = useState(item?.video);
 
-    const getRelated = async () => {
-        setLoading(true)
-        await GetRelatedVideos(item.id).then(response => {
-            // console.log(response.data)
-            if (response.data.success) {
-                setRelated(response?.data.data)
-            }
-        }).catch(err => {
-            console.log(err)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }
+  const getRelated = async () => {
+    setLoading(true);
+    await GetRelatedVideos(item.id)
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data.success) {
+          setRelated(response?.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-    return (
-        <>
-            <header className="header header-fixed bg-white border-0">
-                <div className="container">
-                    <div className="header-content">
-                        <div className="left-content">
-                            <a className="back-btn" onClick={() => nav(-1)}>
-                                <i className="icon feather icon-arrow-left" />
-                            </a>
-                            <h6 className="title">Back</h6>
-                        </div>
-                        <div className="left-content">
-                            <h4 className="title">{item.title}</h4>
-                        </div>
-                        <div className="mid-content">
-                        </div>
-                        <div className="right-content">
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <div className="page-content space-top p-b65">
-                <div className="container pt-0">
-                    <div className="row g-2">
-                        <div className="col-12">
-                            <iframe src={currentVid} frameborder="0" width="100%" height="315" scrolling="no" allowfullscreen></iframe>
-                        </div>
-
-                        <p>{item.views}</p>
-                    </div>
-                </div>
-                <h3 className='text-center'>Related Videos</h3>
-                <div className="row g-2">
-                    {related?.map((item, index) => (
-                        <div className="col-6" key={index}>
-                            <div className="dz-media-card style-5">
-                                {/* <i className="flaticon flaticon-play" /> */}
-
-                                <a className="dz-media" style={{ position: 'relative' }}>
-                                    <img src={!item?.image ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" : item?.image} alt="" style={{ height: 170 }} />
-                                </a>
-                                <a href={item?.video} target='_blank'>
-                                    <img src="assets/icons/play.png" alt="play icon" style={{ position: 'absolute', top: '40%', left: '40%', height: 40 }} /> </a>
-                                <div className="dz-content">
-                                    <div className="left-content">
-                                        <h6 className="title">{item?.duration}</h6>
-                                        <span className="about">{item?.views}</span>
-
-                                    </div>
-
-                                    <small style={{ textAlign: 'center' }}>{item?.title?.substring(0, 35)}...</small>
-
-                                </div>
-                            </div>
-                        </div>))}
-                </div>
+  return (
+    <>
+      <header className="header header-fixed bg-white border-0">
+        <div className="container">
+          <div className="header-content">
+            <div className="left-content">
+              <a className="back-btn" onClick={() => nav(-1)}>
+                <i className="icon feather icon-arrow-left" />
+              </a>
+              <h6 className="title">Back</h6>
+            </div>
+            <div className="left-content">
+              <h4 className="title">{item.title}</h4>
+            </div>
+            <div className="mid-content"></div>
+            <div className="right-content"></div>
+          </div>
+        </div>
+      </header>
+      <div className="page-content space-top p-b65">
+        <div className="container pt-0">
+          <div className="row g-2">
+            <div className="col-12">
+              <iframe
+                src={currentVid}
+                frameborder="0"
+                width="100%"
+                height="315"
+                scrolling="no"
+                allowfullscreen
+              ></iframe>
             </div>
 
-        </>
-    )
-}
+            <p>{item.views}</p>
+          </div>
+        </div>
+        <h3 className="text-center">Related Videos</h3>
+        <div className="row g-2">
+          {related?.map((item, index) => (
+            <div className="col-6" key={index}>
+              <div className="dz-media-card style-5">
+                {/* <i className="flaticon flaticon-play" /> */}
 
-export default PlayVideo
+                <a className="dz-media" style={{ position: "relative" }}>
+                  <img
+                    src={
+                      !item?.image
+                        ? "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+                        : item?.image
+                    }
+                    alt=""
+                    style={{ height: 170 }}
+                  />
+                </a>
+                {/* <a href={item?.video} target="_blank" > */}
+                <a
+                  data-toggle="modal"
+                  data-target={`#itemModalLong${index}`}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src="assets/icons/play.png"
+                    alt="play icon"
+                    style={{
+                      position: "absolute",
+                      top: "40%",
+                      left: "40%",
+                      height: 40,
+                    }}
+                  />{" "}
+                </a>
+                <div className="dz-content">
+                  <div className="left-content">
+                    <h6 className="title">{item?.duration}</h6>
+                    <span className="about">{item?.views}</span>
+                  </div>
+
+                  <small style={{ textAlign: "center" }}>
+                    {item?.title?.substring(0, 35)}...
+                  </small>
+                </div>
+              </div>
+
+              <div
+                className="modal fade"
+                id={`itemModalLong${index}`}
+                tabIndex={-1}
+                role="dialog"
+                aria-labelledby="exampleModalLongTitle"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLongTitle">
+                        {item?.title?.substring(0, 60)}
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <div className="col-12">
+                        {/* <iframe src={item?.video} frameborder="0" width="100%" height="315"></iframe> */}
+                        <iframe
+                          id=""
+                          width="100%"
+                          height="350"
+                          src={item?.video}
+                          frameborder="0"
+                          allowfullscreen
+                        ></iframe>
+                        <a
+                          className="text-center"
+                          href={item?.video}
+                          target="_blank"
+                        >
+                          if not played, Play here
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default PlayVideo;

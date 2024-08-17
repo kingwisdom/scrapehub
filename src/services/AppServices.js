@@ -39,8 +39,9 @@ export const ConfirmOtp = async (model) => {
     })
 }
 
-export const GetVideos = async (page) => {
-    return await axios.get(`${BASE_URL}pornhub/search?key=latest%20UK&sort=mr&page=1`, {
+export const GetVideos = async ({ pageParam }) => {
+    console.log(pageParam)
+    return await axios.get(`${BASE_URL}pornhub/search?key=latest%20HD&sort=mr&page=${pageParam}`, {
         "headers": {
             'Content-Type': 'application/json'
         }
@@ -54,7 +55,7 @@ export const GetRelatedVideos = async (id) => {
     })
 }
 export const GetMoreVideos = async () => {
-    return await axios.get(`${BASE_URL}xvideos/search?key=latest%20UK&page=2`, {
+    return await axios.get(`${BASE_URL}xvideos/search?key=latest%20HD&page=2`, {
         "headers": {
             'Content-Type': 'application/json'
         }
