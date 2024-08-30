@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-google-multi-lang";
 import { useInView } from "react-intersection-observer";
 import {
   GetMoreVideos,
@@ -13,12 +14,16 @@ import { ToastContainer, toast } from "react-toastify";
 import { Virtuoso } from "react-virtuoso";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchItems } from "../services/itemsApi";
+import { withTranslation } from "react-google-multi-lang";
 
 const Home = () => {
   const nav = useNavigate();
+  const { setLanguage } = useTranslation();
   useEffect(() => {
-    getMoreEncounter();
+    getMoreEncounter(page);
   }, []);
+
+  const [page, setPage] = useState(1);
 
   const [moreConnections, setMoreConnections] = useState([]);
   const [search, setSearch] = useState("");
@@ -47,9 +52,9 @@ const Home = () => {
     }
   }, [fetchNextPage, inView]);
 
-  const getMoreEncounter = async () => {
+  const getMoreEncounter = async (p) => {
     setLoading(true);
-    await GetMoreVideos()
+    await GetMoreVideos(p)
       .then((response) => {
         // console.log(response.data);
         if (response.data.success) {
@@ -63,6 +68,20 @@ const Home = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const prevClick = () => {
+    if (page < 1) {
+      return;
+    }
+    let click = page - 1;
+    setPage(click);
+    getMoreEncounter(page);
+  };
+  const nextClick = () => {
+    let click = page + 1;
+    setPage(click);
+    getMoreEncounter(page);
   };
   //https://lust.scathach.id/pornhub/related?id=ph63c4e1dc48fe7
   //https://lust.scathach.id/youporn/search?key=teen&page=2
@@ -109,6 +128,11 @@ const Home = () => {
   // }
   return (
     <>
+      <div>
+        <button onClick={() => setLanguage("en")}>English</button>
+        <button onClick={() => setLanguage("es")}>Spanish</button>
+        <button onClick={() => setLanguage("fr")}>French</button>
+      </div>
       <header className="header bg-white header-fixed border-0 style-2">
         <div className="container">
           <div className="header-content">
@@ -369,6 +393,16 @@ const Home = () => {
               </div>
             </>
           )}
+
+          {/* buttons */}
+          <div className="d-flex">
+            <a href="#" className="btn" onClick={prevClick}>
+              Prev
+            </a>
+            <a href="#" className="btn" onClick={nextClick}>
+              Next
+            </a>
+          </div>
           <div ref={ref}></div>
           {isFetchingNextPage && <p className="text-center">loading...</p>}
         </div>
@@ -380,4 +414,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withTranslation(Home);

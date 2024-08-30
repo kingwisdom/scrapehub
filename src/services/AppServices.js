@@ -1,22 +1,6 @@
 import axios from 'axios'
 import { BASE_URL } from "../config";
 
-
-// const user = JSON.parse(window.localStorage.getItem('user'));
-// const header = {
-//     'Content-Type': 'application/json',
-//     "Authorization": "Bearer " + user?.token
-// }
-
-// // console.log(user)
-
-// export const GetAdInfo = async (model) => {
-//     return await axios.get(`${BASE_URL}info/user-info`, {
-//         "headers": {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-// }
 export const LoginUser = async (model) => {
     return await axios.post(`${BASE_URL}user/login`, model, {
         "headers": {
@@ -54,8 +38,9 @@ export const GetRelatedVideos = async (id) => {
         }
     })
 }
-export const GetMoreVideos = async () => {
-    return await axios.get(`${BASE_URL}xvideos/search?key=latest%20HD&page=2`, {
+export const GetMoreVideos = async (page) => {
+    console.log(page)
+    return await axios.get(`${BASE_URL}youporn/search?key=latest%20HD&page=${page}`, {
         "headers": {
             'Content-Type': 'application/json'
         }
